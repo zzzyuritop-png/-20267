@@ -1,0 +1,7 @@
+{
+  "name": "New Year - Luminescent Particles",
+  "description": "A high-fidelity 3D cinematic Christmas experience featuring a glowing particle tree with pink and gold energy aesthetics, snow effects, and post-processing bloom. Features interactive hand gestures.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

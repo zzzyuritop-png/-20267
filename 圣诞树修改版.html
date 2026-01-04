@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HAPPY NEW YEAR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Italianno&display=swap');
+      body, html { 
+        margin: 0; 
+        padding: 0; 
+        width: 100%; 
+        height: 100%; 
+        overflow: hidden; 
+        background-color: #050205; 
+      }
+      #root { 
+        width: 100%; 
+        height: 100%; 
+      }
+      /* Hide scrollbar just in case */
+      ::-webkit-scrollbar { display: none; }
+      
+      /* 添加临时样式以防CSS文件加载失败 */
+      .loading {
+        color: white;
+        font-family: sans-serif;
+        text-align: center;
+        padding-top: 40vh;
+      }
+    </style>
+    
+    <!-- 修改1：修正importmap -->
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@19.2.3",
+        "react-dom/client": "https://esm.sh/react-dom@19.2.3/client",
+        "three": "https://esm.sh/three@0.182.0",
+        "@react-three/fiber": "https://esm.sh/@react-three/fiber@9.5.0",
+        "@react-three/drei": "https://esm.sh/@react-three/drei@10.7.7"
+      }
+    }
+    </script>
+    
+    <!-- 修改2：移除不存在的CSS文件引用或确认文件存在 -->
+    <!-- <link rel="stylesheet" href="index.css"> -->
+  </head>
+  
+  <body>
+    <div id="root">
+      <!-- 修改3：添加加载状态 -->
+      <div class="loading" id="loading">
+        <h1 style="font-size: 3em; color: gold;">🎉 HAPPY NEW YEAR 🎉</h1>
+        <p>Loading 3D experience...</p>
+      </div>
+    </div>
+    
+    <!-- 修改4：使用内联JavaScript作为后备方案 -->
+    <script type="module">
+      // 检查浏览器是否支持ES模块
+      if (typeof window !== 'undefined') {
+        try {
+          // 尝试加载主应用
+          const module = await import('./index.js');
+          // 如果加载成功，隐藏加载界面
+          document.getElementById('loading').style.display = 'none';
+        } catch (error) {
+          console.error('Failed to load app:', error);
+          
+          // 显示错误信息但保持页面可见
+          document.getElementById('loading').innerHTML = `
+            <h1 style="font-size: 3em; color: gold;">🎉 HAPPY NEW YEAR 🎉</h1>
+            <p style="color: #ff6b6b;">3D experience is not available</p>
+            <p style="font-size: 0.8em; margin-top: 20px;">Basic celebration view is active</p>
+            <div style="margin-top: 30px; font-size: 2em;">
+              <span style="animation: sparkle 1s infinite;">✨</span>
+              <span style="animation: sparkle 1s infinite 0.2s;">✨</span>
+              <span style="animation: sparkle 1s infinite 0.4s;">✨</span>
+            </div>
+          `;
+          
+          // 添加闪烁动画
+          const style = document.createElement('style');
+          style.textContent = `
+            @keyframes sparkle {
+              0%, 100% { opacity: 0.3; }
+              50% { opacity: 1; }
+            }
+          `;
+          document.head.appendChild(style);
+        }
+      }
+    </script>
+    
+    <!-- 修改5：确保引用的文件存在并修正路径 -->
+    <!-- 重要：确保你的项目中有以下文件 -->
+    <!--
+      1. index.js 或 index.tsx (编译后的文件)
+      2. 或者直接使用内联脚本
+    -->
+    
+    <!-- 备选方案：如果没有其他文件，使用纯HTML/CSS展示 -->
+    <script>
+      // 纯JavaScript庆祝效果
+      setTimeout(() => {
+        const loadingEl = document.getElementById('loading');
+        if (loadingEl && !document.querySelector('.celebrate')) {
+          loadingEl.innerHTML += `
+            <style>
+              .firework {
+                position: fixed;
+                width: 5px;
+                height: 5px;
+                border-radius: 50%;
+                pointer-events: none;
+                animation: explode 1s forwards;
+              }
+              @keyframes explode {
+                0% { transform: scale(1); opacity: 1; }
+                100% { transform: scale(20); opacity: 0; }
+              }
+            </style>
+          `;
+          
+          // 创建烟花效果
+          function createFirework() {
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            firework.style.left = Math.random() * 100 + 'vw';
+            firework.style.top = Math.random() * 100 + 'vh';
+            firework.style.background = `hsl(${Math.random() * 360}, 100%, 60%)`;
+            document.body.appendChild(firework);
+            
+            setTimeout(() => firework.remove(), 1000);
+          }
+          
+          // 每200ms创建一个烟花
+          setInterval(createFirework, 200);
+        }
+      }, 1000);
+    </script>
+  </body>
+</html>
